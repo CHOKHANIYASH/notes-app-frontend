@@ -1,0 +1,96 @@
+body{
+    font-family: 'Oxygen', sans-serif;
+    height: 100vh;
+    margin:0px;
+    background: radial-gradient(#ffffff, #9198e5);   
+}
+.header{
+    position:relative;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: .2em; 
+    font-size: 2em;
+    color: blanchedalmond;
+    width: 100%;
+    height: 3vw;
+    background-color: black;
+}
+.navbar{
+    margin-top: 5px;;
+    background-color: #a100f1;
+    border-radius:10px;
+    
+}
+.search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search input[type=text]{
+    width:300px;
+    height:25px;
+    border-radius:25px;
+    border: none;
+}
+     
+
+.search button{
+    background: none;
+    float: right;
+    margin-right: 16px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.search button img {
+
+    height:25px;
+}
+.col{
+    margin-bottom:10px;
+}
+.card{
+    max-height:18rem;
+}
+/*.card{
+    overflow-y: scroll;
+    overflow-anchor: ;
+}*/
+.card-text{
+    max-height: 5rem;
+    
+}
+#login{
+    height: 100vh;
+    
+    
+}
+#login-div{
+    
+    background-color:white;
+    box-shadow: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    height:30rem;
+    /* position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%); 
+    border-radius: 50px;
+    width:90%;
+    height:90%;*/
+}
+#login-photo{
+    width:100%;
+    height:100%;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+#login-form{
+    width:50%;
+    margin-top: 5px;
+    
+}
