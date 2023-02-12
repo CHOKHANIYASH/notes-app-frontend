@@ -7,6 +7,7 @@ import Starred from './Components/Starred';
 import Edit from './Components/Edit';
 import New from './Components/New';
 import Register from './Components/Register';
+import Note from './Components/Note';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
     <Route exact path='/notes/new' element={<PrivateRoute/>}>
       <Route path="/notes/new" element={<New/>} />
     </Route>
+    <Route path="/notes/:id/home" element={<Note/>} />
     <Route path="/login" element={<Login/>} />
     <Route path="/register" element={<Register/>} />
     <Route exact path='*' element={<PrivateRoute/>}>

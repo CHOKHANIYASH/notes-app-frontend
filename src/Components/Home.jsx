@@ -1,13 +1,13 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios';
 import styled from "styled-components"
-import { useNavigate } from 'react-router-dom';
 import starFill from "../images/star-fill.svg"
 import Star from "../images/star.svg"
 import searchIcon from "../images/search_FILL0_wght500_GRAD0_opsz48.svg"
 import addNew from "../images/add_box_FILL0_wght400_GRAD0_opsz48.svg"
-
+import { useNavigate } from 'react-router-dom';
 export default function Home() {
+  const navigate = useNavigate()
   const [notes,setNotes] = useState([]  )
   const [starred,setStarred] = useState([])
   const [loading,setLoading] = useState(false)
@@ -17,8 +17,7 @@ export default function Home() {
       setNotes(()=>data.data.notes)
       setStarred(()=>data.data.starred)
     })
-  },[])   
-  
+  },[])
   function star(e){
     setLoading(true)
     axios.post(`http://localhost:3000/notes/${e.currentTarget.name}/starred`,{},{ withCredentials: true })
@@ -28,7 +27,6 @@ export default function Home() {
     .then((data)=>{
      setStarred(()=>data.data.starred)
     setLoading(false)
-
     })
   })
   }
@@ -59,7 +57,11 @@ export default function Home() {
         }
     })
   }
+  function noteDisplay(e){
+    const id = e.currentTarget.getAttribute('name')
+    navigate(`/notes/${id}/home`)
 
+  }
   return (
     <>
         <Container>
@@ -71,7 +73,6 @@ export default function Home() {
            <a href="/notes/new"><img src={addNew} alt=""/></a>  
           </div>
         </div>
-
         <div className="container-fluid col-sm-6 d-flex justify-content-center " >
           <div className="input-group mb-3 " >
             <input type="text" className="form-control" id="searchTxt" placeholder="Search your list" aria-label="search-list" aria-describedby="basic-addon2" 
@@ -80,12 +81,9 @@ export default function Home() {
             </span>
           </div>
         </div>
-
-     
-
         <div className=" row row-cols-auto ">
       {    notes.map((notes) => 
-          (<div className="col" key={notes._id} >
+          (<div className="col" key={notes._id} name={notes._id} onClick={noteDisplay}>
           <div className="card " style={{width: "18rem"}} >
             <div className="card-body">
               <div className="d-flex justify-content-between">
