@@ -2,9 +2,10 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import qs from "qs"
-
+import { useStateProvider } from './StateProvider'
 
 export default function New() {
+        const {updateMessage} = useStateProvider()
         const navigate = useNavigate()
         const [notes,setNotes] = useState({
           title:"",
@@ -25,12 +26,13 @@ export default function New() {
             'subtitle':notes.subtitle,
             'description':notes.description
           }})
-          axios.post(`http://localhost:3000/notes/new`,data,{ withCredentials: true })
+          axios.post(`${process.env.REACT_APP_SERVER_ID}/notes/new`,data,{ withCredentials: true })
               .then((response)=>{
+                updateMessage(response.data.message)
                 navigate('/notes/home')
               })
               .catch((e)=>{
-                console.log("error")
+                updateMessage(e)
               })
           setLoading(false)
         }

@@ -6,7 +6,7 @@ export default function Note() {
   const [starred,setStarred] = useState([])
   const {id} = useParams()
   useEffect(()=>{
-    axios.get(`http://localhost:3000/notes/${id}/home`,{ withCredentials: true })
+    axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/home`,{ withCredentials: true })
     .then((data)=>{
       setNotes(()=>data.data.notes)
       setStarred(()=>data.data.starred)

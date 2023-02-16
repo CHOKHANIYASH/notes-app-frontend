@@ -2,7 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useStateProvider } from './StateProvider'
 export default function NavBar() {
+  const {updateMessage} = useStateProvider()
   const navigate = useNavigate()
   const navbar_nav = {
     marginLeft:"auto",
@@ -15,7 +17,8 @@ export default function NavBar() {
       return a
   })
   function logout(){
-    axios.get("http://localhost:3000/logout",{ withCredentials: true })
+    axios.get(`${process.env.REACT_APP_SERVER_ID}/logout`,{ withCredentials: true })
+    .then((response)=>    updateMessage(response.data.message)    )
     document.cookie = "user=;path=/"
     navigate('/login')
   }

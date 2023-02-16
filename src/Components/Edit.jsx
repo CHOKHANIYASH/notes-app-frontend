@@ -2,8 +2,9 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import qs from "qs"
-
+import { useStateProvider } from './StateProvider'
 export default function Edit() {
+  const {updateMessage} = useStateProvider()
   const navigate = useNavigate()
   const [notes,setNotes] = useState({
     title:"",
@@ -13,10 +14,9 @@ export default function Edit() {
   const [loading,setLoading] = useState(false)
   const {id} = useParams()
   useEffect(()=>{
-    axios.get(`http://localhost:3000/notes/${id}/edit`,{ withCredentials: true })
+    axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/edit`,{ withCredentials: true })
     .then((data)=>{
       setNotes(()=>data.data.notes)
-      console.log(data.data.notes.description)
     })
   },[])  
   function handleChange(e){
@@ -32,12 +32,13 @@ export default function Edit() {
       'subtitle':notes.subtitle,
       'description':notes.description
     }})
-    axios.put(`http://localhost:3000/notes/${id}/edit`,data,{ withCredentials: true })
+    axios.put(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/edit`,data,{ withCredentials: true })
         .then((response)=>{
+          updateMessage(response.data.message)
           navigate('/notes/home')
         })
         .catch((e)=>{
-          console.log("error")
+          updateMessage(e)
         })
     setLoading(false)
   }

@@ -6,13 +6,15 @@ import Star from "../images/star.svg"
 import searchIcon from "../images/search_FILL0_wght500_GRAD0_opsz48.svg"
 import addNew from "../images/add_box_FILL0_wght400_GRAD0_opsz48.svg"
 import { useNavigate } from 'react-router-dom';
+import { useStateProvider } from './StateProvider';
 export default function Home() {
+  const {updateMessage} = useStateProvider()
   const navigate = useNavigate()
-  const [notes,setNotes] = useState([]  )
+  const [notes,setNotes] = useState([])
   const [starred,setStarred] = useState([])
   const [loading,setLoading] = useState(false)
   useEffect(()=>{
-    axios.get('http://localhost:3000/notes/home',{ withCredentials: true })
+    axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/home`,{ withCredentials: true })
     .then((data)=>{
       setNotes(()=>data.data.notes)
       setStarred(()=>data.data.starred)
@@ -20,10 +22,9 @@ export default function Home() {
   },[])
   function star(e){
     setLoading(true)
-    axios.post(`http://localhost:3000/notes/${e.currentTarget.name}/starred`,{},{ withCredentials: true })
+    axios.post(`${process.env.REACT_APP_SERVER_ID}/notes/${e.currentTarget.name}/starred`,{},{ withCredentials: true })
     .then((data)=>{
-      console.log(data.data)
-      axios.get('http://localhost:3000/notes/home',{ withCredentials: true })
+      axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/home`,{ withCredentials: true })
     .then((data)=>{
      setStarred(()=>data.data.starred)
     setLoading(false)
@@ -33,9 +34,10 @@ export default function Home() {
  function handleDelete(e){
     e.preventDefault()
     const id = e.target.name
-    axios.delete(`http://localhost:3000/notes/${id}/delete`,{ withCredentials: true })
-    .then(()=>{
-      axios.get('http://localhost:3000/notes/home',{ withCredentials: true })
+    axios.delete(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/delete`,{ withCredentials: true })
+    .then((response)=>{
+      updateMessage(response.data.message)
+      axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/home`,{ withCredentials: true })
     .then((data)=>{
       setNotes(()=>data.data.notes)
     })
@@ -83,8 +85,8 @@ export default function Home() {
         </div>
         <div className=" row row-cols-auto ">
       {    notes.map((notes) => 
-          (<div className="col" key={notes._id} name={notes._id} onClick={noteDisplay}>
-          <div className="card " style={{width: "18rem"}} >
+          (<div className="col" key={notes._id}  >
+          <div className="card " style={{width: "18rem"}} name={notes._id}  onDoubleClick={noteDisplay}>
             <div className="card-body">
               <div className="d-flex justify-content-between">
               <h5 className="card-title inline">{notes.title}  </h5>

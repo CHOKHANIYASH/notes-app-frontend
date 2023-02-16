@@ -4,7 +4,9 @@ import LoginImage from "../images/LoginImage.jpg";
 import axios from 'axios';
 import qs from "qs";
 import  {useNavigate}  from "react-router-dom";
+import { useStateProvider } from './StateProvider';
 export default function Login() {
+  const {updateMessage} = useStateProvider()
   const navigate = useNavigate()
     const [formData,setFormData] = useState({
         username:"",
@@ -22,8 +24,10 @@ export default function Login() {
             'username':formData.username,
             'password': formData.password, 
           });
-        axios.post("http://localhost:3000/login",data,{ withCredentials: true })
+        axios.post(`${process.env.REACT_APP_SERVER_ID}/login`,data,{ withCredentials: true })
         .then((response)=>{
+          console.log(response.data)
+          updateMessage(response.data.message)
           navigate('/notes/home')
         })
         .catch((e)=>{

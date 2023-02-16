@@ -8,11 +8,17 @@ import Edit from './Components/Edit';
 import New from './Components/New';
 import Register from './Components/Register';
 import Note from './Components/Note';
-
+import { useStateProvider } from './Components/StateProvider';
 function App() {
+  const {message} = useStateProvider()
   return (
     <>
     <NavBar/>
+    {message!=='' && 
+          <div className="alert alert-success" role="alert">
+          {message}
+         </div>
+      }
     <Routes>  
     <Route exact path='/notes/home' element={<PrivateRoute/>}>
       <Route exact path='/notes/home' element={<Home/>}/>

@@ -5,21 +5,33 @@ import { useNavigate } from 'react-router-dom';
 import searchIcon from "../images/search_FILL0_wght500_GRAD0_opsz48.svg"
 import starFill from '../images/star-fill.svg'
 import Star from '../images/star.svg'
-
+import { useStateProvider } from './StateProvider';
 export default function Starred() {
+  const {updateMessage} = useStateProvider()
   const [starred,setStarred] = useState([])
   const [loading,setLoading] = useState(false)
   useEffect(()=>{
-    axios.get('http://localhost:3000/notes/starred',{ withCredentials: true })
+    axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/starred`,{ withCredentials: true })
     .then((data)=>{
       setStarred(()=>data.data.starred)
     })
   },[])   
-  
+  function handleDelete(e){
+    e.preventDefault()
+    const id = e.target.name
+    axios.delete(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/delete`,{ withCredentials: true })
+    .then((response)=>{
+      updateMessage(response.data.message)
+      axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/starred`,{ withCredentials: true })
+    .then((data)=>{
+      setStarred(()=>data.data.starred)
+    })
+    })
+  }
   function star(e){
     setLoading(true)
-    axios.post(`http://localhost:3000/notes/${e.currentTarget.name}/starred`,{},{ withCredentials: true })
-    .then(()=>{axios.get('http://localhost:3000/notes/starred',{ withCredentials: true })
+    axios.post(`${process.env.REACT_APP_SERVER_ID}/notes/${e.currentTarget.name}/starred`,{},{ withCredentials: true })
+    .then(()=>{axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/starred`,{ withCredentials: true })
     .then((data)=>{
       setStarred(()=>data.data.starred)
       setLoading(false)
@@ -30,13 +42,11 @@ export default function Starred() {
   return (
     <>
         <Container>
+
          <div className="d-flex justify-content-between">
           <div className="list-no">
              <h2> {starred.length } </h2>
           </div>
-          {/* <div className="add-new">
-           <a href="/notes/new"><img src="/images/add_box_FILL0_wght400_GRAD0_opsz48.svg" alt=""/></a>  
-          </div> */}
         </div>
 
         <div className="container-fluid col-sm-6 d-flex justify-content-center " >
@@ -61,9 +71,9 @@ export default function Starred() {
             </div>
               <h6 className="card-subtitle mb-2 text-muted">{ notes.subtitle } </h6>
               <p className="card-text overflow-auto">{notes.description } </p>
-              <a className="btn btn-primary" href="/notes/<%= notes._id%>/edit" role="button">Edit</a>          
-              <form className="d-inline" action="/notes/<%=notes._id%>/delete?_method=DELETE" method="POST">
-                <button className="btn btn-danger">Delete</button>
+              <a className="btn btn-primary m-1" href={`/notes/${notes._id}/edit`} role="button">Edit</a>          
+              <form className="d-inline" onSubmit={handleDelete} name={notes._id}>
+                <button type="submit" className="btn btn-danger" >Delete</button>
               </form>             
             
             </div>
