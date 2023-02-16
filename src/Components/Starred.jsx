@@ -1,10 +1,8 @@
 import React,{useEffect,useState} from 'react'
 import axios from 'axios';
 import styled from "styled-components"
-import { useNavigate } from 'react-router-dom';
 import searchIcon from "../images/search_FILL0_wght500_GRAD0_opsz48.svg"
 import starFill from '../images/star-fill.svg'
-import Star from '../images/star.svg'
 import { useStateProvider } from './StateProvider';
 export default function Starred() {
   const {updateMessage} = useStateProvider()

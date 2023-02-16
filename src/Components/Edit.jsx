@@ -18,7 +18,7 @@ export default function Edit() {
     .then((data)=>{
       setNotes(()=>data.data.notes)
     })
-  },[])  
+  },[id])  
   function handleChange(e){
     setNotes((notes)=>{
       return {...notes,[e.target.name]:e.target.value}
