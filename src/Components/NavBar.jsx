@@ -39,7 +39,7 @@ export default function NavBar() {
                   <a className="nav-link active" href="/notes/starred">Starred</a>
                 </div>
                 <div className="navbar-nav" style={navbar_nav}>
-                      { arr[0][1]===''?
+                      { arr[0][1]==='' || arr[0][0]===''?
                       <>
                       <a className="nav-link active" href="/login">Login</a>
                       <a className="nav-link active" href="/register">Register</a>
