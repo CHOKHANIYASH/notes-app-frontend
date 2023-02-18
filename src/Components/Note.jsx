@@ -11,7 +11,7 @@ export default function Note() {
       setNotes(()=>data.data.notes)
       setStarred(()=>data.data.starred)
     })
-  },[])   
+  },[id])   
   
   return (
     <>

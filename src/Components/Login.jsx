@@ -97,4 +97,3 @@ const Container = styled.div`
     
 }
 `
-        // res.cookie('user',`${req.session.passport.user}` ,{ domain: process.env.CLIENT, path: '/', secure: true })   

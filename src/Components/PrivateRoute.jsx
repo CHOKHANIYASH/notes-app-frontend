@@ -10,6 +10,5 @@ export default function PrivateRoute({component:Component,...rest}) {
     })
 
 return arr[0][0]==='user' && arr[0][1] !==''? <Outlet/>:<Navigate to='/login'/>
-// return <Outlet/>
 
 }
