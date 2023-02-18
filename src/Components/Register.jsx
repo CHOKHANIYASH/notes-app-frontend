@@ -30,6 +30,7 @@ export default function Register() {
       axios.post(`${process.env.REACT_APP_SERVER_ID}/register`,data,{ withCredentials: true })
       .then((response)=>{
         updateMessage(response.data.message)
+        document.cookie = `user=${response.data.user};path=/`
         navigate('/notes/home')
       })
       .catch((e)=>{

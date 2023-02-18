@@ -7,7 +7,6 @@ export function StateProvider({children}){
     
     const [message,setMessage] = useState("");
      function updateMessage(message){
-        console.log(message)
         setMessage(message)
      }
   return (

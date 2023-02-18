@@ -26,8 +26,8 @@ export default function Login() {
           });
         axios.post(`${process.env.REACT_APP_SERVER_ID}/login`,data,{ withCredentials: true })
         .then((response)=>{
-          console.log(response.data)
           updateMessage(response.data.message)
+          document.cookie = `user=${response.data.user};path=/`  
           navigate('/notes/home')
         })
         .catch((e)=>{
@@ -97,3 +97,4 @@ const Container = styled.div`
     
 }
 `
+        // res.cookie('user',`${req.session.passport.user}` ,{ domain: process.env.CLIENT, path: '/', secure: true })   
