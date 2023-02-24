@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useStateProvider } from './StateProvider'
 export default function NavBar() {
-  const {updateMessage} = useStateProvider()
+  const {updateMessage,updateErrorMessage} = useStateProvider()
   const navigate = useNavigate()
   const navbar_nav = {
     marginLeft:"auto",
@@ -19,6 +19,9 @@ export default function NavBar() {
   function logout(){
     axios.get(`${process.env.REACT_APP_SERVER_ID}/logout`,{ withCredentials: true })
     .then((response)=>    updateMessage(response.data.message)    )
+    .catch((e)=>{
+      updateErrorMessage("Something went wrong")
+    })
     document.cookie = "user=;path=/"
     navigate('/login')
   }

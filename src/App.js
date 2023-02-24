@@ -10,13 +10,18 @@ import Register from './Components/Register';
 import Note from './Components/Note';
 import { useStateProvider } from './Components/StateProvider';
 function App() {
-  const {message} = useStateProvider()
+  const {message,errorMessage} = useStateProvider()
   return (
     <>
     <NavBar/>
-    {message!=='' && 
+    {message!=='' ?
           <div className="alert alert-success" role="alert">
           {message}
+         </div>
+      :
+    errorMessage!=='' && 
+          <div className="alert alert-danger" role="alert">
+          {errorMessage}
          </div>
       }
     <Routes>  

@@ -1,7 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import { useStateProvider } from './StateProvider';
 export default function Note() {
+  const {updateMessage,updateErrorMessage} = useStateProvider()
   const [notes,setNotes] = useState([])
   const [starred,setStarred] = useState([])
   const {id} = useParams()
@@ -11,7 +13,10 @@ export default function Note() {
       setNotes(()=>data.data.notes)
       setStarred(()=>data.data.starred)
     })
-  },[id])   
+    .catch((e)=>{
+      updateErrorMessage('Something went wrong')
+    })
+  },[id,updateErrorMessage])   
   
   return (
     <>

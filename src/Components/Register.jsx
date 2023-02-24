@@ -4,7 +4,8 @@ import axios from 'axios'
 import qs from 'qs'
 import { useStateProvider } from './StateProvider'
 export default function Register() {
-  const {updateMessage} = useStateProvider()
+  const {updateMessage,updateErrorMessage} = useStateProvider()
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
   const [formData,setFormData] = useState({
       firstName:"",
@@ -19,6 +20,7 @@ export default function Register() {
   })
  } 
  const handleSubmit =async (e) =>{
+       setLoading(true)
       e.preventDefault()
       var data = qs.stringify({
         firstName:formData.firstName,
@@ -34,8 +36,10 @@ export default function Register() {
         navigate('/notes/home')
       })
       .catch((e)=>{
-        updateMessage(e)
+        updateErrorMessage("Not Registered")
       })
+      setLoading(false)
+
  }
   return (
     <>
@@ -68,7 +72,11 @@ export default function Register() {
               <label htmlFor="exampleInputPassword1">Password</label>
               <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" name="password" onChange={handleChange}/>
             </div>
+            {!loading?
             <button type="submit" className="btn btn-primary">Submit</button>
+            :
+            <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+            }
             </div>
           </form>
         </div>

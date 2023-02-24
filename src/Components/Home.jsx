@@ -8,18 +8,22 @@ import addNew from "../images/add_box_FILL0_wght400_GRAD0_opsz48.svg"
 import { useNavigate } from 'react-router-dom';
 import { useStateProvider } from './StateProvider';
 export default function Home() {
-  const {updateMessage} = useStateProvider()
+  const {updateMessage,updateErrorMessage} = useStateProvider()
   const navigate = useNavigate()
   const [notes,setNotes] = useState([])
   const [starred,setStarred] = useState([])
   const [loading,setLoading] = useState(false)
+  const [loading1,setLoading1] = useState(false)
   useEffect(()=>{
     axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/home`,{ withCredentials: true })
     .then((data)=>{
       setNotes(()=>data.data.notes)
       setStarred(()=>data.data.starred)
     })
-  },[])
+    .catch((e)=>{
+      updateErrorMessage('Something went wrong')
+    })
+  },[updateErrorMessage])
   function star(e){
     setLoading(true)
     axios.post(`${process.env.REACT_APP_SERVER_ID}/notes/${e.currentTarget.name}/starred`,{},{ withCredentials: true })
@@ -29,9 +33,16 @@ export default function Home() {
      setStarred(()=>data.data.starred)
     setLoading(false)
     })
+    .catch((e)=>{
+      updateErrorMessage("Something went wrong")
+    })
+  })
+  .catch((e)=>{
+    updateErrorMessage("Error in Marking star")
   })
   }
  function handleDelete(e){
+    setLoading1(true)
     e.preventDefault()
     const id = e.target.name
     axios.delete(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/delete`,{ withCredentials: true })
@@ -41,7 +52,14 @@ export default function Home() {
     .then((data)=>{
       setNotes(()=>data.data.notes)
     })
+    .catch((e)=>{
+      updateErrorMessage("something went wrong")
     })
+    })
+    .catch((e)=>{
+      updateErrorMessage("Not Deleted")
+    })
+    setLoading1(false)
   }
   function search(e){
     let inputVal = e.target.value.toLowerCase();
@@ -102,9 +120,13 @@ export default function Home() {
               <h6 className="card-subtitle mb-2 text-muted">{ notes.subtitle } </h6>
               <p className="card-text overflow-auto">{notes.description } </p>
               <a className="btn btn-primary m-1" href={`/notes/${notes._id}/edit`} role="button">Edit</a>          
+              {!loading1?
               <form className="d-inline" onSubmit={handleDelete} name={notes._id}>
                 <button type="submit" className="btn btn-danger" >Delete</button>
-              </form>             
+              </form>   
+              :
+              <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+              }           
             
             </div>
           </div>

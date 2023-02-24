@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import qs from "qs"
 import { useStateProvider } from './StateProvider'
 export default function Edit() {
-  const {updateMessage} = useStateProvider()
+  const {updateMessage,updateErrorMessage} = useStateProvider()
   const navigate = useNavigate()
   const [notes,setNotes] = useState({
     title:"",
@@ -17,6 +17,9 @@ export default function Edit() {
     axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/edit`,{ withCredentials: true })
     .then((data)=>{
       setNotes(()=>data.data.notes)
+    })
+    .catch((e)=>{
+      updateErrorMessage('Something went wrong')
     })
   },[id])  
   function handleChange(e){
@@ -38,7 +41,7 @@ export default function Edit() {
           navigate('/notes/home')
         })
         .catch((e)=>{
-          updateMessage(e)
+          updateErrorMessage("Not Edited")
         })
     setLoading(false)
   }
@@ -60,7 +63,11 @@ export default function Edit() {
     <span className="input-group-text">Description</span>
     <textarea type="text" className="form-control" id="description" style={{height: "100px"}} onChange={handleChange} name="description" value={notes.description}/>
   </div>
+  {!loading?
   <button type="submit" disabled={loading} className="btn btn-primary mt-5">Submit</button>
+  :
+  <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+  }
 </form>
 </>
   )

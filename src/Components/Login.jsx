@@ -6,7 +6,8 @@ import qs from "qs";
 import  {useNavigate}  from "react-router-dom";
 import { useStateProvider } from './StateProvider';
 export default function Login() {
-  const {updateMessage} = useStateProvider()
+  const {updateMessage,updateErrorMessage} = useStateProvider()
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
     const [formData,setFormData] = useState({
         username:"",
@@ -18,6 +19,7 @@ export default function Login() {
     })
    }
    const handleSubmit =async (e) =>{
+        setLoading(true)
         e.preventDefault()
        
         var data = qs.stringify({
@@ -31,8 +33,9 @@ export default function Login() {
           navigate('/notes/home')
         })
         .catch((e)=>{
-          console.log("error")
+          updateErrorMessage("incorrect username or password")
         })
+       setLoading(false)
    }
   return (  
     <Container>
@@ -60,7 +63,11 @@ export default function Login() {
             <input type="password" className="form-control" id="exampleInputPassword1"
              placeholder="Password" name="password" value={formData.password} onChange={handleChange}/>
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          {!loading?
+          <button type="submit" className="btn btn-primary" disabled={loading}>Submit</button>
+          :
+            <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+          }
           </div>
         </form>
       </div>

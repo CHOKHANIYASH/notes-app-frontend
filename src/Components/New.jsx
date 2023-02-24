@@ -5,7 +5,7 @@ import qs from "qs"
 import { useStateProvider } from './StateProvider'
 
 export default function New() {
-        const {updateMessage} = useStateProvider()
+        const {updateMessage,updateErrorMessage} = useStateProvider()
         const navigate = useNavigate()
         const [notes,setNotes] = useState({
           title:"",
@@ -32,7 +32,7 @@ export default function New() {
                 navigate('/notes/home')
               })
               .catch((e)=>{
-                updateMessage(e)
+                updateErrorMessage("Note not Created")
               })
           setLoading(false)
         }
@@ -54,7 +54,11 @@ export default function New() {
     <span className="input-group-text">Description</span>
     <textarea className="form-control" style={{height: "100px"}} name="description" onChange={handleChange}/>
   </div>
+  {!loading?
   <button type="submit" disabled={loading} className="btn btn-primary mt-5">Submit</button>
+  :
+  <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+  }
 </form>
     </>
   )
