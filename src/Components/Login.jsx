@@ -39,6 +39,9 @@ export default function Login() {
       }
   return (  
     <Container>
+<div className="alert alert-secondary" id="test" role="alert">
+          TestUser : username--test   password--test
+</div>
 <div className="text-center"> 
   <h1 className="mt-5">Login</h1>
 </div>
@@ -81,6 +84,10 @@ export default function Login() {
 }
 
 const Container = styled.div` 
+  #test{
+    text-align:center;
+  }
+  
     #login{
     height: 100vh;
 }
