@@ -26,7 +26,7 @@ export default function Login() {
             'username':formData.username,
             'password': formData.password, 
           });
-        axios.post(`${process.env.REACT_APP_SERVER_ID}/login`,data,{ withCredentials: true })
+      await axios.post(`${process.env.REACT_APP_SERVER_ID}/login`,data,{ withCredentials: true })
         .then((response)=>{
           updateMessage(response.data.message)
           document.cookie = `user=${response.data.user};path=/`  
@@ -35,8 +35,8 @@ export default function Login() {
         .catch((e)=>{
           updateErrorMessage("incorrect username or password")
         })
-       setLoading(false)
-   }
+        setLoading(false)
+      }
   return (  
     <Container>
 <div className="text-center"> 

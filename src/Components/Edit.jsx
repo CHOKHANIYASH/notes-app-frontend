@@ -27,7 +27,7 @@ export default function Edit() {
       return {...notes,[e.target.name]:e.target.value}
     })
   }
-  function handleSubmit(e){
+  async function handleSubmit(e){
     setLoading(true)
     e.preventDefault()
     const data = qs.stringify({notes:{
@@ -35,7 +35,7 @@ export default function Edit() {
       'subtitle':notes.subtitle,
       'description':notes.description
     }})
-    axios.put(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/edit`,data,{ withCredentials: true })
+    await axios.put(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/edit`,data,{ withCredentials: true })
         .then((response)=>{
           updateMessage(response.data.message)
           navigate('/notes/home')

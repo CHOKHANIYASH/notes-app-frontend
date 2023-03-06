@@ -29,7 +29,7 @@ export default function Register() {
         email:formData.email,
         password:formData.password,
         });
-      axios.post(`${process.env.REACT_APP_SERVER_ID}/register`,data,{ withCredentials: true })
+      await axios.post(`${process.env.REACT_APP_SERVER_ID}/register`,data,{ withCredentials: true })
       .then((response)=>{
         updateMessage(response.data.message)
         document.cookie = `user=${response.data.user};path=/`

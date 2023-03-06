@@ -41,11 +41,11 @@ export default function Home() {
     updateErrorMessage("Error in Marking star")
   })
   }
- function handleDelete(e){
+ async function handleDelete(e){
     setLoading1(true)
     e.preventDefault()
     const id = e.target.name
-    axios.delete(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/delete`,{ withCredentials: true })
+    await axios.delete(`${process.env.REACT_APP_SERVER_ID}/notes/${id}/delete`,{ withCredentials: true })
     .then((response)=>{
       updateMessage(response.data.message)
       axios.get(`${process.env.REACT_APP_SERVER_ID}/notes/home`,{ withCredentials: true })

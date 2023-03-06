@@ -18,7 +18,7 @@ export default function New() {
             return {...notes,[e.target.name]:e.target.value}
           })
         }
-        function handleSubmit(e){
+        async function handleSubmit(e){
           setLoading(true)
           e.preventDefault()
           const data = qs.stringify({notes:{
@@ -26,7 +26,7 @@ export default function New() {
             'subtitle':notes.subtitle,
             'description':notes.description
           }})
-          axios.post(`${process.env.REACT_APP_SERVER_ID}/notes/new`,data,{ withCredentials: true })
+          await axios.post(`${process.env.REACT_APP_SERVER_ID}/notes/new`,data,{ withCredentials: true })
               .then((response)=>{
                 updateMessage(response.data.message)
                 navigate('/notes/home')
